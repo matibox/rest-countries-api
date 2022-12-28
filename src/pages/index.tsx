@@ -6,6 +6,7 @@ import {
 import Head from 'next/head';
 import { useState } from 'react';
 import SingleCountry from '../components/Country';
+import Filters from '../components/Filters';
 import Search from '../components/Search';
 import SearchContextProvider from '../context/SearchContext';
 import { type Country } from '../types/Country';
@@ -30,9 +31,9 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           setError={setError}
         >
           <>
-            <div className='flex justify-between'>
+            <div className='flex w-full justify-between md:w-10/12'>
               <Search />
-              {/* filter */}
+              <Filters />
             </div>
             <section className='grid w-full grid-cols-[repeat(auto-fill,_300px)] justify-center gap-10'>
               {!error &&
@@ -55,7 +56,9 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 export const getStaticProps: GetStaticProps<{
   data: Country[];
 }> = async () => {
-  const res = await fetch('https://restcountries.com/v3.1/all');
+  const res = await fetch(
+    'https://restcountries.com/v3.1/all?fields=flags,name,population,region,capital'
+  );
   const data = await res.json();
 
   return {

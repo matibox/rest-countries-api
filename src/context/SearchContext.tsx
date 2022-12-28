@@ -1,7 +1,14 @@
-import { createContext, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useDebounce } from '../hooks/useDebounce';
 import { Country, isCountries } from '../types/Country';
 import { isError } from '../types/Error';
+import { Region } from '../types/Region';
 
 function createCtx<A extends {} | null>() {
   const ctx = createContext<A | undefined>(undefined);
@@ -14,17 +21,34 @@ function createCtx<A extends {} | null>() {
     return c;
   };
 
-  return { useCtx, Provider: ctx.Provider } as const;
+  return [useCtx, ctx.Provider] as const;
 }
+
+type Option = {
+  id: number;
+  name: Region | 'Filter by Region';
+};
+
+const options: Option[] = [
+  { id: 0, name: 'Filter by Region' },
+  { id: 1, name: 'Africa' },
+  { id: 2, name: 'Americas' },
+  { id: 3, name: 'Asia' },
+  { id: 4, name: 'Europe' },
+  { id: 5, name: 'Oceania' },
+];
 
 type SearchContext = {
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
+  selectedFilter: Option;
+  setSelectedFilter: React.Dispatch<React.SetStateAction<Option>>;
+  filters: Option[];
 };
 
-const SearchContext = createCtx<SearchContext>();
+const [useCtx, Provider] = createCtx<SearchContext>();
 
-export const useSearch = SearchContext.useCtx;
+export const useSearch = useCtx;
 
 type ProviderProps = {
   children: JSX.Element;
@@ -40,40 +64,57 @@ export default function SearchContextProvider({
   initialData,
 }: ProviderProps) {
   const [query, setQuery] = useState('');
-
-  useDebounce(
-    async () => {
-      setError(undefined);
-
-      if (query === '') {
-        setCountries(initialData);
-        return;
-      }
-
-      const res = await fetch(`https://restcountries.com/v3.1/name/${query}`);
-      const data: unknown = await res.json();
-
-      if (isError(data)) {
-        setError(data.message);
-        return;
-      }
-
-      if (isCountries(data)) {
-        setCountries(data);
-      }
-    },
-    500,
-    [query]
+  const [selectedFilter, setSelectedFilter] = useState<Option>(
+    options[0] as Option
   );
 
+  const [countriesByQ, setCountriesByQ] = useState<Country[]>([]);
+  const [countriesByRegion, setCountriesByRegion] = useState<Country[]>([]);
+
+  useDebounce(
+    () => {
+      setCountriesByQ(
+        initialData.filter(country => {
+          if (!query) return true;
+          return country.name.common.toLowerCase().includes(query);
+        })
+      );
+
+      setCountriesByRegion(
+        initialData.filter(country => {
+          if (selectedFilter.id === 0) return true;
+          return country.region === selectedFilter.name;
+        })
+      );
+    },
+    500,
+    [query, selectedFilter]
+  );
+
+  useEffect(() => {
+    setError(undefined);
+    const result = countriesByQ.filter(c1 =>
+      countriesByRegion.some(c2 => c1.name.common === c2.name.common)
+    );
+
+    if (result.length === 0) {
+      setError('Not Found');
+    }
+
+    setCountries(result);
+  }, [countriesByQ, countriesByRegion]);
+
   return (
-    <SearchContext.Provider
+    <Provider
       value={{
         query,
         setQuery,
+        selectedFilter,
+        setSelectedFilter,
+        filters: options,
       }}
     >
       {children}
-    </SearchContext.Provider>
+    </Provider>
   );
 }

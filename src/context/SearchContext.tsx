@@ -24,9 +24,7 @@ type SearchContext = {
 
 const SearchContext = createCtx<SearchContext>();
 
-export function useSearch() {
-  return SearchContext.useCtx();
-}
+export const useSearch = SearchContext.useCtx;
 
 type ProviderProps = {
   children: JSX.Element;

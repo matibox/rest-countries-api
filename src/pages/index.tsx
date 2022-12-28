@@ -30,8 +30,10 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           setError={setError}
         >
           <>
-            <Search />
-            {/* filter */}
+            <div className='flex justify-between'>
+              <Search />
+              {/* filter */}
+            </div>
             <section className='grid w-full grid-cols-[repeat(auto-fill,_300px)] justify-center gap-10'>
               {!error &&
                 countries.map(country => (

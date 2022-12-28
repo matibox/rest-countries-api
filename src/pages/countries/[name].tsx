@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { type ParsedUrlQuery } from 'querystring';
 import { CountryInfo } from '../../components/CountryInfo';
-import { Country } from '../../types/Country';
+import { type Country } from '../../types/Country';
 import formatPopulation from '../../utils/formatPopulation';
 
 interface IParams extends ParsedUrlQuery {
@@ -77,14 +77,16 @@ const SingleCountry: NextPage<
           />
           <CountryInfo
             properties={[
-              { key: 'Top Level Domain', value: country.tld[0] },
+              {
+                key: 'Top Level Domain',
+                value: country.tld ? country.tld[0] : '-',
+              },
               {
                 key: 'Currencies',
                 value: country.currencies
                   ? Object.keys(country.currencies).map(key => {
                       if (country.currencies) {
-                        //@ts-ignore
-                        return country.currencies[`${key}`].name;
+                        return country.currencies[`${key}`]?.name;
                       }
                       return '';
                     })
@@ -118,7 +120,7 @@ const SingleCountry: NextPage<
                     <Link
                       href={`/countries/${border}`}
                       key={border}
-                      className='text-md flex w-32 justify-center rounded-sm bg-white p-2 text-blue-very-dark drop-shadow-md transition-colors hover:bg-[#38bdf8] hover:text-white dark:bg-blue-dark dark:text-white dark:hover:bg-[#38bdf8] dark:hover:text-blue-very-dark'
+                      className='text-md flex max-h-10 w-32 justify-center rounded-sm bg-white p-2 text-blue-very-dark drop-shadow-md transition-colors hover:bg-[#38bdf8] hover:text-white dark:bg-blue-dark dark:text-white dark:hover:bg-[#38bdf8] dark:hover:text-blue-very-dark'
                     >
                       {border}
                     </Link>
@@ -156,7 +158,7 @@ export const getStaticProps: GetStaticProps<{
   );
   const data: Country = (await res.json())[0];
 
-  let borders: Country[] = [];
+  const borders: Country[] = [];
 
   if (data.borders) {
     for (const border of data.borders) {
@@ -169,8 +171,8 @@ export const getStaticProps: GetStaticProps<{
 
   return {
     props: {
-      country: data,
-      borders: borders.map(border => border.name.common),
+      country: data ?? null,
+      borders: borders.map(border => border.name.common) ?? null,
     },
   };
 };

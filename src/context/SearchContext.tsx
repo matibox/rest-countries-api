@@ -1,16 +1,9 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useDebounce } from '../hooks/useDebounce';
-import { Country, isCountries } from '../types/Country';
-import { isError } from '../types/Error';
+import { type Country } from '../types/Country';
 import { Region } from '../types/Region';
 
-function createCtx<A extends {} | null>() {
+function createCtx<A extends object | null>() {
   const ctx = createContext<A | undefined>(undefined);
 
   const useCtx = () => {
@@ -107,7 +100,15 @@ export default function SearchContextProvider({
     }
 
     setCountries(result);
-  }, [countriesByQ, countriesByRegion]);
+  }, [
+    countriesByQ,
+    countriesByRegion,
+    initialData,
+    query,
+    selectedFilter.id,
+    setCountries,
+    setError,
+  ]);
 
   return (
     <Provider

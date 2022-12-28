@@ -6,9 +6,10 @@ import { CountryInfo } from './CountryInfo';
 
 type CountryProps = {
   country: Country;
+  index: number;
 };
 
-export default function Country({ country }: CountryProps) {
+export default function Country({ country, index }: CountryProps) {
   return (
     <Link
       href={`/countries/${country.name.common}`}
@@ -20,7 +21,7 @@ export default function Country({ country }: CountryProps) {
         height={200}
         width={300}
         className='w-min-full h-auto'
-        loading='lazy'
+        priority={index < 4}
       />
       <div className='flex h-auto w-full shrink grow basis-auto flex-col justify-center gap-5 px-4'>
         <h2 className='text-lg font-extrabold leading-5 text-blue-very-dark dark:text-white'>

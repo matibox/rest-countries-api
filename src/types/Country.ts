@@ -1,4 +1,4 @@
-import { Region } from './Region';
+import { type Region } from './Region';
 
 export type Country = {
   flags: {
@@ -20,7 +20,7 @@ export type Country = {
   languages?: {
     [key: string]: string;
   };
-  tld: string[];
+  tld?: string[];
   currencies?: {
     [key: string]: {
       name: string;

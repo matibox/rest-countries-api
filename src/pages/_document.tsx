@@ -9,7 +9,7 @@ export default function Document() {
           href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0'
         />
         <link
-          href='https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap'
+          href='https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap&display=optional'
           rel='stylesheet'
         />
       </Head>

@@ -1,5 +1,5 @@
 import {
-  GetStaticProps,
+  type GetStaticProps,
   type InferGetStaticPropsType,
   type NextPage,
 } from 'next';
@@ -37,8 +37,12 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
             </div>
             <section className='grid w-full grid-cols-[repeat(auto-fill,_300px)] justify-center gap-10'>
               {!error &&
-                countries.map(country => (
-                  <SingleCountry key={country.name.common} country={country} />
+                countries.map((country, i) => (
+                  <SingleCountry
+                    key={country.name.common}
+                    country={country}
+                    index={i}
+                  />
                 ))}
               {error && (
                 <p className='mt-2 text-center text-2xl font-semibold text-blue-very-dark dark:text-white'>

@@ -1,5 +1,8 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { type Country } from '../types/Country';
+import formatPopulation from '../utils/formatPopulation';
+import { CountryInfo } from './CountryInfo';
 
 type CountryProps = {
   country: Country;
@@ -7,7 +10,10 @@ type CountryProps = {
 
 export default function Country({ country }: CountryProps) {
   return (
-    <div className='flex h-96 flex-col self-stretch overflow-hidden rounded-md bg-white drop-shadow-lg dark:bg-blue-dark'>
+    <Link
+      href={`/countries/${country.name.common}`}
+      className='flex h-96 flex-col self-stretch overflow-hidden rounded-md bg-white drop-shadow-lg dark:bg-blue-dark'
+    >
       <Image
         src={country.flags.png}
         alt={`${country.name.common} flag`}
@@ -20,33 +26,23 @@ export default function Country({ country }: CountryProps) {
         <h2 className='text-lg font-extrabold leading-5 text-blue-very-dark dark:text-white'>
           {country.name.common}
         </h2>
-        <div className='flex flex-col gap-2'>
-          <p>
-            <span className='text-very-dark font-semibold text-blue-very-dark dark:text-white'>
-              Population:{' '}
-            </span>
-            <span className='text-blue-very-dark dark:text-gray-very-light'>
-              {country.population}
-            </span>
-          </p>
-          <p>
-            <span className='font-semibold text-blue-very-dark dark:text-white'>
-              Region:{' '}
-            </span>
-            <span className='text-blue-very-dark dark:text-gray-very-light'>
-              {country.region === 'Americas' ? 'America' : country.region}
-            </span>
-          </p>
-          <p>
-            <span className='font-semibold text-blue-very-dark dark:text-white'>
-              Capital:{' '}
-            </span>
-            <span className='text-blue-very-dark dark:text-gray-very-light'>
-              {country.capital}
-            </span>
-          </p>
-        </div>
+        <CountryInfo
+          properties={[
+            {
+              key: 'Population',
+              value: formatPopulation(country.population),
+            },
+            {
+              key: 'Region',
+              value: country.region === 'Americas' ? 'America' : country.region,
+            },
+            {
+              key: 'Capital',
+              value: country.capital,
+            },
+          ]}
+        />
       </div>
-    </div>
+    </Link>
   );
 }

@@ -6,10 +6,27 @@ export type Country = {
   };
   name: {
     common: string;
+    nativeName: {
+      [key: string]: {
+        common: string;
+      };
+    };
   };
   population: number;
   region: Region;
   capital: string;
+  borders?: string[];
+  subregion: string;
+  languages: {
+    [key: string]: string;
+  };
+  tld: string[];
+  currencies: {
+    [key: string]: {
+      name: string;
+      symbol: string;
+    };
+  };
 };
 
 export function isCountries(array: unknown): array is Country[] {

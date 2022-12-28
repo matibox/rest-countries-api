@@ -20,7 +20,7 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       <main className='mt-[5rem] flex min-h-[95vh] flex-col items-center p-2'>
         {/* search */}
         {/* filter */}
-        <section className='flex w-full flex-wrap justify-center gap-10'>
+        <section className='grid w-full grid-cols-[repeat(auto-fill,_300px)] justify-center gap-10'>
           {countries.map(country => (
             <SingleCountry key={country.name.common} country={country} />
           ))}

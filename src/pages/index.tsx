@@ -31,7 +31,7 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
           setError={setError}
         >
           <>
-            <div className='flex w-full justify-between md:w-10/12'>
+            <div className='flex w-full flex-col gap-10 sm:w-10/12 sm:flex-row sm:justify-between sm:gap-4'>
               <Search />
               <Filters />
             </div>

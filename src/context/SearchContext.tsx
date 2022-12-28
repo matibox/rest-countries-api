@@ -93,11 +93,16 @@ export default function SearchContextProvider({
 
   useEffect(() => {
     setError(undefined);
+
     const result = countriesByQ.filter(c1 =>
       countriesByRegion.some(c2 => c1.name.common === c2.name.common)
     );
 
     if (result.length === 0) {
+      if (query === '' && selectedFilter.id === 0) {
+        setCountries(initialData);
+        return;
+      }
       setError('Not Found');
     }
 

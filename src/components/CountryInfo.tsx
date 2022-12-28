@@ -9,7 +9,7 @@ type CountryInfoProps = {
 
 export function CountryInfo({ properties }: CountryInfoProps) {
   return (
-    <div className='flex flex-col gap-2'>
+    <div className={`flex flex-col gap-2`}>
       {properties.map(property => (
         <p key={property.key}>
           <span className='text-very-dark font-semibold text-blue-very-dark dark:text-white'>

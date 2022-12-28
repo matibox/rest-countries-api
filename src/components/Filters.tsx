@@ -23,7 +23,7 @@ export default function Filters() {
           {filters.map(filter => (
             <button
               key={filter.id}
-              className='font-semibold'
+              className='px-2 font-semibold hover:text-[#38bdf8] dark:bg-blue-dark dark:text-white dark:hover:text-[#38bdf8]'
               onClick={() => {
                 setSelectedFilter(filter);
                 setFiltersOpened(false);

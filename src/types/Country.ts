@@ -6,7 +6,7 @@ export type Country = {
   };
   name: {
     common: string;
-    nativeName: {
+    nativeName?: {
       [key: string]: {
         common: string;
       };
@@ -17,11 +17,11 @@ export type Country = {
   capital: string;
   borders?: string[];
   subregion: string;
-  languages: {
+  languages?: {
     [key: string]: string;
   };
   tld: string[];
-  currencies: {
+  currencies?: {
     [key: string]: {
       name: string;
       symbol: string;

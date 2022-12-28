@@ -6,7 +6,7 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <header className='fixed top-0 left-0 z-20 flex h-20 min-w-full items-center justify-between bg-gray-very-light px-4 shadow-lg dark:bg-blue-dark'>
+    <header className='fixed top-0 left-0 z-20 flex h-20 min-w-full items-center justify-between bg-gray-very-light px-4 shadow-lg dark:bg-blue-dark md:px-8 lg:px-24'>
       <Link href='/' className='text-lg font-semibold'>
         Where in the world?
       </Link>

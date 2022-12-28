@@ -13,7 +13,7 @@ export default function Document() {
           rel='stylesheet'
         />
       </Head>
-      <body className='min-h-screen bg-gray-very-light font-nunito dark:bg-blue-very-dark-dm'>
+      <body className='relative min-h-[95vh] bg-gray-very-light font-nunito dark:bg-blue-very-dark-dm'>
         <Main />
         <NextScript />
       </body>
